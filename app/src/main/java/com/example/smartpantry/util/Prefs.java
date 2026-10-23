@@ -3,7 +3,7 @@ package com.example.smartpantry.util;
 import android.content.Context;
 import android.content.SharedPreferences;
 
-/** Wrapper around SharedPreferences for the two options on the Settings screen. */
+
 public final class Prefs {
 
     private static final String FILE_NAME = "smart_pantry_prefs";
@@ -16,7 +16,7 @@ public final class Prefs {
         return context.getSharedPreferences(FILE_NAME, Context.MODE_PRIVATE);
     }
 
-    /** True when items expiring within 3 days should be highlighted in the pantry list. */
+  
     public static boolean isExpiryAlertsOn(Context context) {
         return prefs(context).getBoolean(KEY_EXPIRY_ALERTS, true);
     }
@@ -25,7 +25,7 @@ public final class Prefs {
         prefs(context).edit().putBoolean(KEY_EXPIRY_ALERTS, on).apply();
     }
 
-    /** Unit pre-selected when adding a new ingredient. */
+ 
     public static String getDefaultUnit(Context context) {
         return prefs(context).getString(KEY_DEFAULT_UNIT, "g");
     }

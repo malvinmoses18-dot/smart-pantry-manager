@@ -7,10 +7,7 @@ import androidx.room.Ignore;
 import androidx.room.Index;
 import androidx.room.PrimaryKey;
 
-/**
- * One ingredient line of a recipe, e.g. "200 g flour".
- * Deleting a recipe automatically deletes its ingredient lines (CASCADE).
- */
+
 @Entity(
         tableName = "recipe_ingredients",
         foreignKeys = @ForeignKey(
@@ -24,19 +21,18 @@ public class RecipeIngredient {
     @PrimaryKey(autoGenerate = true)
     public long id;
 
-    /** The recipe this line belongs to. */
     public long recipeId;
 
     @NonNull
     public String name = "";
 
-    /** Amount needed, in the unit below. */
+
     public double quantity;
 
     @NonNull
     public String unit = "";
 
-    /** Required by Room. */
+
     public RecipeIngredient() { }
 
     @Ignore

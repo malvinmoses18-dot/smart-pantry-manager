@@ -17,10 +17,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-/** Custom RecyclerView adapter that lists recipes as tappable cards. */
 public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.ViewHolder> {
 
-    /** The Activity implements this to open the recipe detail screen. */
+
     public interface Listener {
         void onRecipeClick(Recipe recipe);
     }

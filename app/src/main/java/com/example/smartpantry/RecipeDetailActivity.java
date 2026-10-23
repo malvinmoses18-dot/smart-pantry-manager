@@ -14,10 +14,9 @@ import com.google.android.material.appbar.MaterialToolbar;
 
 import java.util.List;
 
-/** Recipe Detail screen: the full ingredient list and the method for one recipe. */
 public class RecipeDetailActivity extends AppCompatActivity {
 
-    /** Intent extra holding the id of the recipe to show. */
+  
     public static final String EXTRA_RECIPE_ID = "extra_recipe_id";
 
     private MaterialToolbar toolbar;
@@ -66,7 +65,7 @@ public class RecipeDetailActivity extends AppCompatActivity {
         return text.toString().trim();
     }
 
-    /** Numbers each line of the stored steps: "1. ...", "2. ...". */
+
     private static String buildStepsText(String steps) {
         String[] lines = steps.split("\n");
         StringBuilder text = new StringBuilder();

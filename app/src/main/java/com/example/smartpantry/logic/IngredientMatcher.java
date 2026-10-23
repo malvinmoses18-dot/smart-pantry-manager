@@ -11,20 +11,6 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 
-/**
- * The core business logic of the app: the strict-matching rule.
- *
- * A recipe is suggested ONLY if every ingredient it needs is in the pantry in at
- * least the required quantity. One missing or short ingredient excludes the recipe.
- *
- * To cope with real-world messiness it:
- *  - ignores case, extra spaces and punctuation in names;
- *  - treats singular and plural names as the same ("tomato" = "tomatoes");
- *  - converts compatible units (1 kg = 1000 g, 1 l = 1000 ml, 1 cup = 240 ml);
- *  - adds up several pantry entries of the same ingredient.
- *
- * This class has no Android code, so it can be unit tested on a normal JVM.
- */
 public final class IngredientMatcher {
 
     private static final double EPSILON = 1e-6;
@@ -35,11 +21,7 @@ public final class IngredientMatcher {
 
     private IngredientMatcher() { }
 
-    // ------------------------------------------------------------------
-    // Public API
-    // ------------------------------------------------------------------
 
-    /** Returns only the recipes the user can cook right now from the pantry. */
     public static List<Recipe> suggest(List<Recipe> recipes,
                                        Map<Long, List<RecipeIngredient>> ingredientsByRecipe,
                                        List<PantryItem> pantry) {
@@ -53,7 +35,7 @@ public final class IngredientMatcher {
         return suggested;
     }
 
-    /** True only if EVERY required ingredient is available in the required quantity. */
+
     public static boolean canMake(List<RecipeIngredient> needed, List<PantryItem> pantry) {
         if (needed.isEmpty()) {
             return false;
@@ -66,7 +48,6 @@ public final class IngredientMatcher {
         return true;
     }
 
-    /** Adds up every pantry entry with the same ingredient and compares with the amount needed. */
     public static boolean hasEnough(RecipeIngredient needed, List<PantryItem> pantry) {
         Set<String> neededNames = nameVariants(needed.name);
         Measure required = toBase(needed.quantity, needed.unit);
@@ -77,9 +58,6 @@ public final class IngredientMatcher {
                 continue;
             }
             Measure have = toBase(item.quantity, item.unit);
-            // Only add amounts in the same family (grams with grams, millilitres with millilitres).
-            // Incompatible units such as "3 pcs" against "200 g" are never guessed at, so a
-            // recipe is never suggested by mistake.
             if (have.family.equals(required.family)) {
                 available += have.value;
             }
@@ -87,15 +65,7 @@ public final class IngredientMatcher {
         return available + EPSILON >= required.value;
     }
 
-    // ------------------------------------------------------------------
-    // Name normalisation
-    // ------------------------------------------------------------------
-
-    /**
-     * All spellings an ingredient name could be known by. Two names match when their
-     * sets share at least one entry, e.g. "Tomatoes" gives {tomatoes, tomatoe, tomato},
-     * which overlaps with "tomato".
-     */
+ 
     public static Set<String> nameVariants(String rawName) {
         Set<String> variants = new HashSet<>();
         if (rawName == null) {
@@ -111,7 +81,6 @@ public final class IngredientMatcher {
         }
         variants.add(name);
 
-        // Only the last word changes between singular and plural ("cherry tomatoes").
         int lastSpace = name.lastIndexOf(' ');
         String prefix = lastSpace >= 0 ? name.substring(0, lastSpace + 1) : "";
         String last = lastSpace >= 0 ? name.substring(lastSpace + 1) : name;
@@ -122,12 +91,12 @@ public final class IngredientMatcher {
                 && !last.endsWith("us")
                 && !last.endsWith("is");
         if (looksPlural) {
-            variants.add(prefix + last.substring(0, last.length() - 1));           // eggs -> egg
+            variants.add(prefix + last.substring(0, last.length() - 1));           
             if (last.endsWith("es")) {
-                variants.add(prefix + last.substring(0, last.length() - 2));       // tomatoes -> tomato
+                variants.add(prefix + last.substring(0, last.length() - 2));       
             }
             if (last.endsWith("ies")) {
-                variants.add(prefix + last.substring(0, last.length() - 3) + "y"); // berries -> berry
+                variants.add(prefix + last.substring(0, last.length() - 3) + "y"); 
             }
         }
         return variants;
@@ -142,11 +111,7 @@ public final class IngredientMatcher {
         return false;
     }
 
-    // ------------------------------------------------------------------
-    // Unit conversion
-    // ------------------------------------------------------------------
 
-    /** An amount converted to a base unit: grams, millilitres, or a plain count. */
     public static final class Measure {
         public final String family;
         public final double value;
@@ -157,7 +122,6 @@ public final class IngredientMatcher {
         }
     }
 
-    /** Converts an amount and unit text to grams, millilitres or a count. */
     public static Measure toBase(double quantity, String rawUnit) {
         String unit = rawUnit == null ? "" : rawUnit.toLowerCase(Locale.ROOT).trim().replace(".", "");
         switch (unit) {
@@ -186,7 +150,7 @@ public final class IngredientMatcher {
                 return new Measure(COUNT, quantity);
 
             default:
-                // Unknown unit (e.g. "clove"): only comparable with the same unit.
+            
                 String singular = unit.endsWith("s") && unit.length() > 2
                         ? unit.substring(0, unit.length() - 1) : unit;
                 return new Measure("other:" + singular, quantity);

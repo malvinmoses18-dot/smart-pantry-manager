@@ -19,13 +19,9 @@ import com.google.android.material.textfield.TextInputLayout;
 
 import java.util.Calendar;
 
-/**
- * Add a new pantry item, or edit an existing one when an item id is passed
- * in the Intent (EXTRA_ITEM_ID). Validates the form before saving.
- */
+
 public class AddEditIngredientActivity extends AppCompatActivity {
 
-    /** Intent extra holding the id of the item to edit. Absent when adding. */
     public static final String EXTRA_ITEM_ID = "extra_item_id";
 
     private TextInputLayout nameLayout;
@@ -83,7 +79,6 @@ public class AddEditIngredientActivity extends AppCompatActivity {
         findViewById(R.id.button_save).setOnClickListener(v -> save());
     }
 
-    /** Reads the item from the database on a background thread, then fills the form. */
     private void loadExistingItem() {
         AppDatabase.databaseExecutor.execute(() -> {
             final PantryItem item = dao.getById(itemId);
@@ -130,7 +125,7 @@ public class AddEditIngredientActivity extends AppCompatActivity {
         return field.getText() == null ? "" : field.getText().toString().trim();
     }
 
-    /** Checks every field and shows an error under the ones that are wrong. */
+
     private boolean validate() {
         nameLayout.setError(null);
         quantityLayout.setError(null);
@@ -169,8 +164,7 @@ public class AddEditIngredientActivity extends AppCompatActivity {
             }
         }
 
-        // Only reject past dates when the user has just picked one,
-        // so an already-expired item can still have its quantity edited.
+   
         if (expiryChanged && expiryMillis != null) {
             Calendar today = Calendar.getInstance();
             today.set(Calendar.HOUR_OF_DAY, 0);

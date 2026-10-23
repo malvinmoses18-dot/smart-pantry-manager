@@ -16,10 +16,8 @@ import com.example.smartpantry.util.Format;
 import java.util.ArrayList;
 import java.util.List;
 
-/** Custom RecyclerView adapter that shows one pantry item per card. */
 public class PantryAdapter extends RecyclerView.Adapter<PantryAdapter.ViewHolder> {
 
-    /** The Activity implements this to react to taps. */
     public interface Listener {
         void onItemClick(PantryItem item);
         void onDeleteClick(PantryItem item);
@@ -71,7 +69,7 @@ public class PantryAdapter extends RecyclerView.Adapter<PantryAdapter.ViewHolder
             holder.expiry.setVisibility(View.GONE);
         } else {
             holder.expiry.setVisibility(View.VISIBLE);
-            // The stored date is midnight at the start of the expiry day, so add a day.
+            
             long remaining = item.expiryDate + ONE_DAY - System.currentTimeMillis();
             String date = Format.date(item.expiryDate);
             if (highlightExpiring && remaining < 0) {

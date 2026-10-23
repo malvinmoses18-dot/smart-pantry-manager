@@ -5,7 +5,6 @@ import androidx.room.Entity;
 import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
-/** A recipe. Its ingredients live in the recipe_ingredients table. */
 @Entity(tableName = "recipes")
 public class Recipe {
 
@@ -15,11 +14,10 @@ public class Recipe {
     @NonNull
     public String name = "";
 
-    /** Preparation steps, one step per line. */
     @NonNull
     public String steps = "";
 
-    /** Required by Room. */
+   
     public Recipe() { }
 
     @Ignore

@@ -22,10 +22,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-/**
- * Suggested Recipes screen. Runs the strict-matching rule against the current
- * pantry and lists only the recipes the user can make right now.
- */
 public class SuggestedRecipesActivity extends AppCompatActivity implements RecipeAdapter.Listener {
 
     private RecipeAdapter adapter;
@@ -49,7 +45,7 @@ public class SuggestedRecipesActivity extends AppCompatActivity implements Recip
     protected void onResume() {
         super.onResume();
         NavHelper.syncSelection(this, R.id.nav_suggested);
-        // Re-run the matching every time the screen is shown, because the pantry may have changed.
+    
         loadSuggestions();
     }
 
@@ -59,7 +55,7 @@ public class SuggestedRecipesActivity extends AppCompatActivity implements Recip
             List<PantryItem> pantry = db.pantryDao().getAllNow();
             List<Recipe> recipes = db.recipeDao().getAllRecipes();
 
-            // Group the ingredient lines by recipe id.
+          
             Map<Long, List<RecipeIngredient>> byRecipe = new HashMap<>();
             for (RecipeIngredient ingredient : db.recipeDao().getAllIngredients()) {
                 List<RecipeIngredient> list = byRecipe.get(ingredient.recipeId);
@@ -80,7 +76,6 @@ public class SuggestedRecipesActivity extends AppCompatActivity implements Recip
         });
     }
 
-    /** Opens the detail screen, passing the recipe id in the Intent. */
     @Override
     public void onRecipeClick(Recipe recipe) {
         Intent intent = new Intent(this, RecipeDetailActivity.class);

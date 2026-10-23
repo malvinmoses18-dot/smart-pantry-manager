@@ -3,15 +3,10 @@ package com.example.smartpantry.data;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Pre-loads the recipe collection the first time the app runs.
- * Amounts use g, ml and pcs so they can be compared with pantry items in any compatible unit.
- */
 public final class RecipeSeeder {
 
     private RecipeSeeder() { }
 
-    /** Inserts the recipes only if the table is empty, so it is safe to call on every start. */
     public static synchronized void seedIfEmpty(RecipeDao dao) {
         if (dao.countRecipes() > 0) {
             return;
@@ -159,7 +154,6 @@ public final class RecipeSeeder {
 
     }
 
-    /** Inserts one recipe, then its ingredient lines linked by the new recipe id. */
     private static void add(RecipeDao dao, String name, String steps, RecipeIngredient... ingredients) {
         long recipeId = dao.insertRecipe(new Recipe(name, steps));
         List<RecipeIngredient> list = new ArrayList<>();
